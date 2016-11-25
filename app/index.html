@@ -31,9 +31,15 @@
 	<!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
 	<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 	<!-- endbuild -->
+
+	<script src="bower_components/web-animations-js/web-animations.min.js"></script>
+	<link rel="import" href="bower_components/platinum-sw/platinum-sw-elements.html">
+	<link rel="import" href="bower_components/polymerfire/firebase-app.html">
+
 	<!-- Because this project uses vulcanize this should be your only html import
-           in this file. All other imports should go in elements.html -->
-	<link rel="import" href="elements/elements.html">
+					 in this file. All other imports should go in elements.html -->
+	<link rel="import" href="my-app.html">
+
 	<!-- For shared styles, shared-styles.html import in elements.html -->
 	<style is="custom-style" include="shared-styles"></style>
 </head>
@@ -46,8 +52,28 @@
 		LOADING
 	</div>
 	<template is="dom-bind" id="app" unresolved>
-		This is the app!
-		<my-greeting></my-greeting>
+
+		<platinum-sw-register
+				auto-register
+				skip-waiting
+				clients-claim
+				reload-on-install
+				href="sw-import.js">
+				<platinum-sw-cache
+						default-cache-strategy="network-first">
+				</platinum-sw-cache>
+		</platinum-sw-register>
+
+		<firebase-app
+				api-key="AIzaSyB_0E-JK0a6aSAJbOuII6v3UdhxogKZVI8"
+				auth-domain="uts-app2.firebaseapp.com"
+				database-url="https://uts-app2.firebaseio.com"
+				storage-bucket="uts-app2.appspot.com"
+				messaging-sender-id="920643117321">
+		</firebase-app>
+
+		<my-app></my-app>
+
 	</template>
 	<!-- build:js scripts/app.js -->
 	<script src="scripts/app.js"></script>

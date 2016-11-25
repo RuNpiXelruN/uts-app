@@ -1,0 +1,22 @@
+<link rel="import" href="elements/elements.html">
+
+<dom-module id="my-app">
+	<template>
+		<style include="my-app-shared-styles"></style>
+		<h1>[[greeting]]</h1>
+
+    <my-login></my-login>
+
+	</template>
+	<script>
+	Polymer({
+		is: 'my-app',
+		properties: {
+			greeting: {
+				type: String,
+				value: 'Supp!',
+			},
+		},
+	});
+	</script>
+</dom-module>
