@@ -4,6 +4,17 @@
 
     <h4>New Visualisation</h4>
 
+    <paper-dialog id="kgtodoAddNew" always-on-top entry-animation="scale-up-animation" exit-animation="scale-down-animation" with-backdrop>
+      <h2>Add New Todo</h2>
+      <paper-dialog-scrollable>
+        <paper-input id="kgTodoLabel" label="Add label" value={{getlabel::input}}></paper-input>
+        <paper-textarea id="kgTodoContent" label="Add content"></paper-textarea>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button on-tap="onAdd">Add Todo</paper-button>
+      </div>
+    </paper-dialog>
+
     <form is="iron-form" id="new-vis">
       <paper-input id="title" name="name" label="name" required autocomplete></paper-input>
       <paper-input id="type" name="type" label="type" required autocomplete></paper-input>
@@ -12,7 +23,6 @@
     </form>
 
     <paper-toast id="toast" text="{{text}}"></paper-toast>
-    <!-- <paper-button on-click="openToast">click me</paper-button> -->
 
   </template>
   <script>

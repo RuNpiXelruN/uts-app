@@ -1,25 +1,14 @@
 <dom-module id="my-dashboard">
   <template>
     <style>
-      list-item {
-        background: #f5f8ff;
-        cursor: pointer;
-      }
     </style>
 
-    <firebase-document id="profile"
+    <!-- <firebase-document id="profile"
         path="/users/[[user.uid]]"
         data={{profile}}>
-    </firebase-document>
+    </firebase-document> -->
 
-    <h2>Profile data for [[profile.info.name]]</h2>
-
-    <!-- <form>
-      <input value="{{profile.info.name}}">
-      <button on-click="update">Update</button>
-    </form> -->
-
-    <h1>dashboard of [[user.displayName]]</h1>
+    <h1>[[user.displayName]]'s dashboard.</h1>
 
     <my-visualisation-form user="[[user]]"></my-visualisation-form>
 
@@ -28,29 +17,16 @@
         data={{items}}>
     </firebase-query>
 
-    <!-- <button on-click="viewVisual">check vis</button> -->
-
-
-    <!-- <iron-list items="[[items]]">
-      <template>
-        <list-item key="[[item.$key]]" data="[[item]]" on-click="viewVisual">
-          <br>
-          <h4>[[item.info.title]]</h4>
-          <p>[[item.info.type]]</p>
-        </list-item>
-      </template>
-    </iron-list> -->
-
 
     <firebase-document id="visual"
       path="/visuals/">
     </firebase-document>
 
-    <paper-dialog  data="[[item]]" id="dialog">
+    <!-- <paper-dialog  data="[[item]]" id="dialog">
       <h2>[[item.info.title]]</h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
         irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    </paper-dialog>
+    </paper-dialog> -->
 
   </template>
   <script>

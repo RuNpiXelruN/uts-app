@@ -3,15 +3,12 @@
 <dom-module id="my-app">
 	<template>
 		<style include="my-app-shared-styles"></style>
-		<h1>[[greeting]]</h1>
-
 
     <firebase-document
         id="visualisationList"
         path="/visualisationList"
         data="{{visualisationData}}">
     </firebase-document>
-
 
     <my-auth-portal></my-auth-portal>
 
