@@ -1,0 +1,80 @@
+<dom-module id="my-auth-portal">
+  <template>
+    <style include="shared-styles">
+
+    </style>
+
+    <firebase-auth
+        id="auth"
+        user="{{user}}"
+        status-known="{{statusKnown}}"
+        provider="google">
+    </firebase-auth>
+
+    <template is="dom-if" if="[[user]]">
+      <h1>[[user.displayName]]</h1>
+      <my-dashboard user="[[user]]"></my-dashboard>
+    </template>
+
+    <paper-button raised on-tap="login" hidden$="[[user]]">Sign In</paper-button>
+    <paper-button raised on-tap="logout" hidden$="[[!user]]">Sign Out</paper-button>
+
+  </template>
+  <script>
+    Polymer({
+      is: "my-auth-portal",
+      properties: {
+        user: {
+          type: Object,
+          // uid: function() {
+          //   console.log('uid from within properties')
+          //   return user.uid
+          // },
+        },
+        statusKnown: {
+          type: Object,
+        },
+      },
+
+      login: function() {
+        return this.$.auth.signInWithPopup()
+          .then(function({user}) {
+
+            var userData = user.providerData[0];
+            var getTimestamp = Date.now()
+
+            var userObj = {
+              lastUpdated: getTimestamp,
+              info: {
+                uid: user.uid,
+                name: userData.displayName,
+                avatar: userData.photoURL,
+                email: userData.email,
+                timestamp: getTimestamp,
+              }
+            }
+
+            console.log("main user uid", user.uid)
+            console.log("prov data uid", userData.uid)
+            var promises = [];
+            var ref = firebase.database().ref();
+
+            promises.push(ref.child('/users/' + user.uid).set(userObj));
+
+            return Promise.all(promises)
+              .then(function() {
+                var toast = document.querySelector('#toast');
+                toast.text = "Logged in Successfully!"
+                toast.show();
+                console.log('USER', user)
+              });
+          });
+      },
+
+      logout: function() {
+        // console.log('user', this.user)
+        return this.$.auth.signOut();
+      },
+    });
+  </script>
+</dom-module>

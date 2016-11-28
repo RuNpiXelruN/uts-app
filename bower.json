@@ -7,5 +7,8 @@
   "devDependencies": {
     "web-component-tester": "^4.0.0"
   },
-  "ignore": []
+  "ignore": [],
+  "resolutions": {
+    "polymer": "^1.2.0"
+  }
 }

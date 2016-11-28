@@ -1,0 +1,80 @@
+<dom-module id="my-visualisation-form">
+  <template>
+    <style></style>
+
+    <h4>New Visualisation</h4>
+
+    <form is="iron-form" id="new-vis">
+      <paper-input id="title" name="name" label="name" required autocomplete></paper-input>
+      <paper-input id="type" name="type" label="type" required autocomplete></paper-input>
+      <paper-input id="data" name="data" label="data" required autocomplete></paper-input>
+      <paper-button id="send" on-click="send" raised>Send</paper-button>
+    </form>
+
+    <paper-toast id="toast" text="{{text}}"></paper-toast>
+    <!-- <paper-button on-click="openToast">click me</paper-button> -->
+
+  </template>
+  <script>
+    Polymer({
+      is: "my-visualisation-form",
+      properties: {
+        user: {
+          type: Object,
+        },
+      },
+
+      openToast: function() {
+        this.$.toast.open();
+      },
+
+      send: function(event) {
+        console.log('event', event);
+        var promises = [];
+        var ref = firebase.database().ref();
+
+        var visId = ref.child('/visuals').push().key
+        var currentUserId = this.user.uid
+
+        var newVis = {
+          info: {
+            visualId: visId,
+            uid: currentUserId,
+            title: title.value,
+            type: type.value,
+            data: data.value,
+            timestamp: Date.now(),
+          }
+        }
+
+        promises.push(ref.child('/visuals/' + visId).set(newVis));
+        promises.push(ref.child('/usersVisuals/' + newVis.info.uid + '/' + visId).set(newVis.info));
+
+        return Promise.all(promises)
+          .then(function() {
+            var toast = document.querySelector('#toast');
+            toast.text = "Visualistaion Saved!"
+            toast.show();
+          })
+          .catch((error) => console.log("Something went wrong: ", error.message));
+      },
+
+      // observers: [ "loguser(user.*)" ],
+      //
+      // loguser: function(user) {
+      //   console.log('user: my-vis-form', user);
+      // },
+    });
+  </script>
+</dom-module>
+
+
+
+<!-- <template is="dom-bind">
+  <form action="http://httpbin.org/get" type="get">
+    <birthday-input birthday="{{_date}}"></birthday-input>
+    <input type="submit">
+
+    <input name="birthday" value="[[_date]]" hidden>
+  </form>
+</template> -->

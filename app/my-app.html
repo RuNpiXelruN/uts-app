@@ -5,7 +5,15 @@
 		<style include="my-app-shared-styles"></style>
 		<h1>[[greeting]]</h1>
 
-    <my-login></my-login>
+
+    <firebase-document
+        id="visualisationList"
+        path="/visualisationList"
+        data="{{visualisationData}}">
+    </firebase-document>
+
+
+    <my-auth-portal></my-auth-portal>
 
 	</template>
 	<script>

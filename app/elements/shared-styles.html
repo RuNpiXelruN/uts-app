@@ -1,5 +1,175 @@
 <dom-module id="my-app-shared-styles">
   <template>
-    <style></style>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Inconsolata');
+        :root {
+          /*font variables*/
+          --base-font-family: 'Inconsolata', Helvetica, Arial, sans-serif;
+          --base-font-size: 16px;
+          --base-font-weight: 400;
+          --small-font-size: calc(var(--base-font-size) * 0.875);
+          --base-line-height: 1.5em;
+          /*spacing variables*/
+          --spacing-unit: 1.875em;
+          --content-width: 1200px;
+          --max-width-large: 1200px;
+          --max-width-medium: 800px;
+          --max-width-small: 600px;
+          /*color variables*/
+          --text-color: #111;
+          --background-color: #FDFDFD;
+          --primary-color: #0099cc;
+          --grey-color: #828282;
+          --grey-color-light: #E8E8E8;
+          --grey-color-dark: #424242;
+        }
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        pre,
+        hr,
+        dl,
+        dd,
+        ol,
+        ul,
+        figure {
+          margin: 0;
+          padding: 0;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        pre,
+        ul,
+        ol,
+        dl,
+        figure {
+          margin-bottom: calc(var(--spacing-unit) / 2);
+        }
+        body {
+          font: var(--base-font-weight) var(--base-font-size)/var(--base-line-height) var(--base-font-family);
+          color: var(--text-color);
+          background-color: var(--background-color);
+          font-feature-settings: "kern" 1;
+          font-kerning: normal;
+        }
+        img {
+          max-width: 100%;
+          vertical-align: middle;
+        }
+        figure>img {
+          display: block;
+        }
+        figcaption {
+          font-size: var(--small-font-size);
+        }
+        ul,
+        ol {
+          margin-left: var(--spacing-unit);
+        }
+        li>ul,
+        li>ol {
+          margin-bottom: 0;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          font-weight: var(--base-font-weight);
+        }
+        h1 {
+          font-size: 2.625em;
+          line-height: var(--base-line-height);
+        }
+        h2 {
+          font-size: 2em;
+          line-height: var(--base-line-height);
+        }
+        h3 {
+          font-size: 1.5em;
+          line-height: var(--base-line-height);
+        }
+        h4 {
+          font-size: 1.125em;
+          line-height: var(--base-line-height);
+        }
+        h5 {
+          font-size: 1em;
+          line-height: var(--base-line-height);
+        }
+        h6 {
+          font-size: 0.875em;
+          line-height: var(--base-line-height);
+        }
+        a {
+          color: var(--main-color);
+          text-decoration: none;
+        }
+        a:visited {
+          color: var(--main-color);
+        }
+        a:hover {
+          color: var(--main-color);
+          text-decoration: underline;
+        }
+        blockquote {
+          color: var(--grey-color);
+          border-left: 4px solid var(--grey-color-light);
+          padding-left: var(--spacing-unit) / 2;
+          font-size: 1.125em;
+          letter-spacing: -1px;
+          font-style: italic;
+        }
+        blockquote> :last-child {
+          margin-bottom: 0;
+        }
+        .wrapper {
+          max-width: calc(var(--content-width) - (var(--spacing-unit) * 2));
+          margin-right: auto;
+          margin-left: auto;
+          padding-right: var(--spacing-unit);
+          padding-left: var(--spacing-unit);
+        }
+        .page-wrapper {
+          min-height: 100vh;
+        }
+        paper-button {
+          border: 1px solid #000;
+          border-radius: 0;
+          font: var(--base-font-weight) var(--base-font-size)/var(--base-line-height) var(--base-font-family);
+        }
+        * ::content .input-content.paper-input-container label {
+          font-size: inherit;
+          font-family: inherit;
+          line-height: 1.4em;
+        }
+        * ::content .input-content.paper-input-container.label-is-floating label {
+          font-size: inherit;
+          font-family: inherit;
+          line-height: 1.4em;
+        }
+        * ::content .input-content.paper-input-container input {
+          font-size: inherit;
+          font-family: inherit;
+          line-height: 1.4em;
+        }
+        * ::content .input-content.paper-input-container paper-icon-button {
+          font-size: inherit;
+          font-family: inherit;
+        }
+    </style>
   </template>
 </dom-module>
