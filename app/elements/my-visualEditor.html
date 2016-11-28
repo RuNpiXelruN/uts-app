@@ -1,0 +1,24 @@
+<dom-module id="my-visualEditor">
+  <template>
+    <style></style>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: "my-visualEditor",
+      properties: {
+        visualObj: {
+          type: Object,
+          notify: true,
+        },
+        opened: {
+          type: Boolean,
+          value: false,
+          readOnly: true,
+          reflectToAttribute: true,
+        },
+      },
+    });
+  </script>
+</dom-module>

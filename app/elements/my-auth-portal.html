@@ -11,12 +11,12 @@
         provider="google">
     </firebase-auth>
 
+    <paper-button raised on-tap="login" hidden$="[[user]]">Sign In</paper-button>
+    <paper-button raised on-tap="logout" hidden$="[[!user]]">Sign Out</paper-button>
+
     <template is="dom-if" if="[[user]]">
       <my-dashboard user="[[user]]"></my-dashboard>
     </template>
-
-    <paper-button raised on-tap="login" hidden$="[[user]]">Sign In</paper-button>
-    <paper-button raised on-tap="logout" hidden$="[[!user]]">Sign Out</paper-button>
 
   </template>
   <script>
@@ -25,10 +25,6 @@
       properties: {
         user: {
           type: Object,
-          // uid: function() {
-          //   console.log('uid from within properties')
-          //   return user.uid
-          // },
         },
         statusKnown: {
           type: Object,
@@ -40,21 +36,19 @@
           .then(function({user}) {
 
             var userData = user.providerData[0];
-            var getTimestamp = Date.now()
+            // var getTimestamp = Date.now()
 
             var userObj = {
-              lastUpdated: getTimestamp,
+              timestamp: Date.now(),
               info: {
                 uid: user.uid,
                 name: userData.displayName,
                 avatar: userData.photoURL,
                 email: userData.email,
-                timestamp: getTimestamp,
+                lastUpdated: Date.now(),
               }
             }
 
-            console.log("main user uid", user.uid)
-            console.log("prov data uid", userData.uid)
             var promises = [];
             var ref = firebase.database().ref();
 
@@ -65,13 +59,11 @@
                 var toast = document.querySelector('#toast');
                 toast.text = "Logged in Successfully!"
                 toast.show();
-                console.log('USER', user)
               });
           });
       },
 
       logout: function() {
-        // console.log('user', this.user)
         return this.$.auth.signOut();
       },
     });

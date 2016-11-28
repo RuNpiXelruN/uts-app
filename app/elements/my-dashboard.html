@@ -3,30 +3,15 @@
     <style>
     </style>
 
-    <!-- <firebase-document id="profile"
-        path="/users/[[user.uid]]"
-        data={{profile}}>
-    </firebase-document> -->
+    <firebase-query id="visualsQuery" path="/visuals" data="{{items}}"></firebase-query>
 
     <h1>[[user.displayName]]'s dashboard.</h1>
 
     <my-visualisation-form user="[[user]]"></my-visualisation-form>
 
-    <firebase-query id="visQuery"
-        path="/visuals"
-        data={{items}}>
-    </firebase-query>
+    <my-visualisation-list  on-update="updateData" data="{{items}}" user="[[user]]"></my-visualisation-list>
 
 
-    <firebase-document id="visual"
-      path="/visuals/">
-    </firebase-document>
-
-    <!-- <paper-dialog  data="[[item]]" id="dialog">
-      <h2>[[item.info.title]]</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    </paper-dialog> -->
 
   </template>
   <script>
@@ -36,29 +21,35 @@
         user: {
           type: Object
         },
-        profile: {
-          type: Object,
-        },
-        visualisationCollection: {
-          type: Array,
-          // value: [],
-        },
-        visId: function() {
-          this.viewVisual;
+      },
+
+      updateData: function(visInfo) {
+        console.log("Visual Data", visInfo.detail)
+        var promises = [];
+        var ref = firebase.database().ref();
+        var visualId = visInfo.detail.id;
+
+        var updatedVisData = {
+          info: {
+            visualId: visInfo.detail.id,
+            uid: this.user.uid,
+            title: visInfo.detail.title,
+            type: visInfo.detail.type,
+            data: visInfo.detail.data,
+            lastUpdated: Date.now(),
+          }
         }
-      },
 
-      viewVisual: function(e) {
-        console.log("Poly dom event", Polymer.dom(e))
-        var visId = e.target.key;
-        return visId;
-      },
+        promises.push(ref.child('/visuals/' + visualId).update(updatedVisData));
+        promises.push(ref.child('/usersVisuals/' + updatedVisData.info.uid + '/' + visualId).update(updatedVisData.info));
 
-      observers: [ "logprofile(profile.*)" ],
-
-      logprofile: function(profile) {
-        console.log('profile: my-vis-form', profile);
-        // console.log('doc data?', this.$.profile.path)
+        return Promise.all(promises)
+          .then(function() {
+            var toast = document.querySelector('#toast');
+            toast.text = "Visualisation Updated!"
+            toast.show();
+          })
+          .catch((error) => console.log("Something went wrong: ", error.message));
       },
     });
   </script>
