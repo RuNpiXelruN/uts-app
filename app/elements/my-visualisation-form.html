@@ -1,18 +1,48 @@
 <dom-module id="my-visualisation-form">
   <template>
     <style>
-      paper-button.blue {
-        background: ##03a9f4;
+
+      .newVis-form-wrapper {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .newVis-form {
+        width: 80%;
+        padding: 2rem;
+        box-shadow: 0vw 0vw 2vw 0vw rgba(0,0,0,0.3);
+      }
+
+      .innerVis-form {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+      }
+
+      .innerVis-form paper-input {
+        width: 30%;
+      }
+
+      .addNew-btn {
+        margin-top: 4vh;
+        background: #0F4BEB;
         color: #fff;
       }
+
     </style>
 
-    <form is="iron-form" id="new-vis">
-      <paper-input id="title" name="name" label="name" required autocomplete></paper-input>
-      <paper-input id="type" class="blue" name="type" label="type" required autocomplete></paper-input>
-      <paper-input id="data" class="blue" name="data" label="data" required autocomplete></paper-input>
-      <paper-button id="send" on-click="send" raised>Send</paper-button>
-    </form>
+    <div class="newVis-form-wrapper">
+      <form is="iron-form" id="new-vis" class="newVis-form">
+        <div class="innerVis-form">
+          <paper-input id="title" name="name" label="name" required autocomplete></paper-input>
+          <paper-input id="type" class="blue" name="type" label="type" required autocomplete></paper-input>
+          <paper-input id="data" class="blue" name="data" label="data" required autocomplete></paper-input>
+        </div>
+        <paper-button id="send" on-click="send" class="addNew-btn" raised>Add New</paper-button>
+      </form>
+    </div>
 
     <paper-toast id="toast" text="{{text}}"></paper-toast>
 

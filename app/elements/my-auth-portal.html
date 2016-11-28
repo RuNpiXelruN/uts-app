@@ -2,6 +2,26 @@
   <template>
     <style include="shared-styles">
 
+      .login-wrapper {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .signin-btn {
+        margin-top: 40vh;
+      }
+
+      .logout-wrapper {
+        display: flex;
+        flex-flow: row nowrap;
+      }
+
+      .signout-btn {
+        margin-left: auto;
+      }
+
     </style>
 
     <firebase-auth
@@ -11,8 +31,15 @@
         provider="google">
     </firebase-auth>
 
-    <paper-button raised on-tap="login" hidden$="[[user]]">Sign In</paper-button>
-    <paper-button raised on-tap="logout" hidden$="[[!user]]">Sign Out</paper-button>
+    <div class="login-wrapper">
+      <paper-button  class="signin-btn" raised on-tap="login" hidden$="[[user]]">Sign In</paper-button>
+    </div>
+
+    <div class="logout-wrapper">
+      <paper-button class="signout-btn" raised on-tap="logout" hidden$="[[!user]]">Sign Out</paper-button>
+    </div>
+
+
 
     <template is="dom-if" if="[[user]]">
       <my-dashboard user="[[user]]"></my-dashboard>
