@@ -36,7 +36,7 @@
     <div class="newVis-form-wrapper">
       <form is="iron-form" id="new-vis" class="newVis-form">
         <div class="innerVis-form">
-          <paper-input id="title" name="name" label="name" required autocomplete></paper-input>
+          <paper-input id="title" name="name" label="name" value="{{this.form.title.value}}" equired autocomplete></paper-input>
           <paper-input id="type" class="blue" name="type" label="type" required autocomplete></paper-input>
           <paper-input id="data" class="blue" name="data" label="data" required autocomplete></paper-input>
         </div>
@@ -54,10 +54,6 @@
         user: {
           type: Object,
         },
-      },
-
-      submit: function() {
-
       },
 
       openDialog: function() {

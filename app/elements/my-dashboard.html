@@ -9,7 +9,7 @@
 
     <my-visualisation-form user="[[user]]"></my-visualisation-form>
 
-    <my-visualisation-list  on-update="updateData" data="{{items}}" user="[[user]]"></my-visualisation-list>
+    <my-visualisation-list  on-update="updateData" on-delete="deleteVisualisation" data="{{items}}" user="[[user]]"></my-visualisation-list>
 
 
 
@@ -23,8 +23,28 @@
         },
       },
 
+      deleteVisualisation: function(data) {
+        // console.log('data', data)
+        var promises = [];
+        var ref = firebase.database().ref();
+        var visualId = data.detail.id;
+
+        promises.push(ref.child('/visuals/' + visualId).remove());
+        promises.push(ref.child('/usersVisuals/' + this.user.uid + '/' + visualId).remove());
+
+        return Promise.all(promises)
+          .then(function() {
+            var toast = document.querySelector('#toast');
+            toast.text = "Visualisation successfully deleted"
+            toast.show();
+          })
+          .catch(function(error) {
+            console.log("Something went wrong", error.message);
+          });
+      },
+
       updateData: function(visInfo) {
-        console.log("Visual Data", visInfo.detail)
+        // console.log("Visual Data", visInfo.detail)
         var promises = [];
         var ref = firebase.database().ref();
         var visualId = visInfo.detail.id;
@@ -49,7 +69,9 @@
             toast.text = "Visualisation Updated!"
             toast.show();
           })
-          .catch((error) => console.log("Something went wrong: ", error.message));
+          .catch(function(error) {
+            console.log("Something went wrong", error.message);
+          });
       },
     });
   </script>

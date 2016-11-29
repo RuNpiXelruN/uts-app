@@ -34,34 +34,87 @@
         flex-flow: column nowrap;
       }
 
-      .edit-button {
+      .flexBtn-wrapper {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
         margin-top: 1rem;
-        align-self: flex-end;
+      }
+
+      .update-button {
+        background: #0F4BEB;
+        color: #fff;
+      }
+
+      .close-button {
+        background: #000;
+        color: #fff;
+      }
+
+      .visButton-wrapper {
+        display: flex;
+        flex-flow: row nowrap;
+        margin-top: 3rem;
+      }
+
+      #deleteIcon {
+        margin-right: 0.5rem;
       }
 
     </style>
 
-    <template is="dom-repeat" items="{{data}}" as="visual" on-tap="edit">
+    <template is="dom-repeat" items="{{data}}" as="visual">
 
-      <div id$="[[visual.$key]]" class="vis-wrapper" on-click="openTest">
+      <!-- - - - - - - - - - - - - - - - - - Data Loop / Iteration - - - - - - - - - - - - - - - - - -->
+
+      <!-- TODO swap 'title' identifiers to 'name' instead to allow for nicer aria-label -->
+
+      <div id$="[[visual.$key]]" class="vis-wrapper">
         <div class="vis-textWrapper">
           <p id="visTitle">[[visual.info.title]]</p>
           <p id="visType">[[visual.info.type]]</p>
-          <paper-button on-tap="edit" title$="test_[[visual.$key]]">Edit</paper-button>
+          <!-- <paper-button raised on-tap="openUpdateDialog" title$="update_[[visual.$key]]">Edit</paper-button> -->
+          <div class="visButton-wrapper">
+            <paper-fab on-tap="confirmDeleteDialog" title$="delete_[[visual.$key]]" id="deleteIcon" icon="delete" mini></paper-fab>
+            <paper-fab on-tap="openUpdateDialog" title$="update_[[visual.$key]]" id="updateIcon" icon="create" mini></paper-fab>
+          </div>
+          <!-- <paper-button raised on-tap="confirmDeleteDialog" title$="delete_[[visual.$key]]">Delete</paper-button> -->
         </div>
         <img src="http://placehold.it/100x200" alt="">
       </div>
 
-      <paper-dialog id$="test_[[visual.$key]]" class="edit-dialog">
+      <!-- - - - - - - - - - - - - - - - - - - -End Data Loop - - - - - - - - - - - - - - - - - - -->
+
+
+      <!-- - - - - - - - - - - - - - - - - - Edit / Update Dialog - - - - - - - - - - - - - - - - - -->
+
+      <paper-dialog id$="update_[[visual.$key]]" class="edit-dialog">
         <div class="content">
           <form is="iron-form" id="editVis" class="edit-form">
             <paper-input id="title1" name="name" label="name" value={{visual.info.title}} required autocomplete></paper-input>
             <paper-input id="type" class="blue" name="type" label="type" value={{visual.info.type}} required autocomplete></paper-input>
             <paper-input id="data" class="blue" name="data" label="data" value={{visual.info.data}} required autocomplete></paper-input>
-            <paper-button id="send" class="edit-button" on-click="sendToUpdate" title$="test_[[visual.$key]]" raised>Update</paper-button>
+            <div class="flexBtn-wrapper">
+              <paper-button id="close" class="close-button" on-click="closeUpdateDialog" title$="update_[[visual.$key]]" raised>Close</paper-button>
+              <paper-button id="send" class="update-button" on-click="sendToUpdate" title$="update_[[visual.$key]]" raised>Update</paper-button>
+            </div>
           </form>
         </div>
       </paper-dialog>
+
+      <!-- - - - - - - - - - - - - - - - - - - -End Edit / Update - - - - - - - - - - - - - - - - - - -->
+
+
+      <!-- - - - - - - - - - - - - - - - - - - - Delete Dialog - - - - - - - - - - - - - - - - - - - -->
+
+      <paper-dialog id="delete_[[visual.$key]]" modal>
+        <p>Are you sure you want to delete?</p>
+        <paper-button raised on-click="sendToDelete" title$="delete_[[visual.$key]]">Confirm</paper-button>
+        <paper-button raised on-click="closeDeleteConfirmDialog" title$="delete_[[visual.$key]]">Cancel</paper-button>
+      </paper-dialog>
+
+      <!-- - - - - - - - - - - - - - - - - - - -End Delete Dialog - - - - - - - - - - - - - - - - - - -->
 
     </template>
 
@@ -79,11 +132,59 @@
 
       },
 
-      openTest: function(e) {
-        console.log(e.target.title)
-        console.log(e.model.__data__)
+      // Validates current user owns visualisation --------------------------------------
+      confirmCurrentUser(e) {
+        if (this.user.uid === e.model.__data__.visual.info.uid) {
+          return true
+        } else {
+          var toast = document.querySelector('#toast');
+          toast.text = "This doesn't belong to you"
+          toast.show();
+          return false;
+        }
+      },
+
+      // </ --------------------------------------------------------------------------- </
+
+
+
+      // Delete Visualisation functions --------------------------------------------------
+
+      closeDeleteConfirmDialog: function(e) {
+        var deleteConfirmDialog = document.querySelector('#' + e.target.title);
+        deleteConfirmDialog.toggle();
+      },
+
+      confirmDeleteDialog: function(e) {
+        var deleteDialog = document.querySelector('#' + e.target.title);
+
+        if ( this.confirmCurrentUser(e) ) {
+          deleteDialog.toggle();
+        }
+      },
+
+      sendToDelete: function(e) {
+        var deleteConfirm = document.querySelector('#' + e.target.title)
+        var visIdToDelete = {
+          id: e.model.__data__.visual.$key,
+        }
+        this.fire('delete', visIdToDelete);
+        deleteConfirm.toggle();
+      },
+
+      // </ --------------------------------------------------------------------------- </
+
+      closeUpdateDialog: function(e) {
         var editDialog = document.querySelector('#' + e.target.title);
         editDialog.toggle();
+      },
+
+      openUpdateDialog: function(e) {
+        var editDialog = document.querySelector('#' + e.target.title);
+
+        if ( this.confirmCurrentUser(e) ) {
+          editDialog.toggle();
+        }
       },
 
       sendToUpdate: function(e) {
@@ -98,6 +199,7 @@
         editDialog.toggle();
       },
 
+      // </ --------------------------------------------------------------------------- </
     });
   </script>
 </dom-module>
