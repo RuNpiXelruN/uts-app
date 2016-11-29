@@ -1,13 +1,39 @@
 <dom-module id="my-visualisation-list">
   <template>
-    <style></style>
+    <style>
+      :host {
+        display: flex;
+        flex-flow: row wrap;
+        margin-top: 3rem;
+      }
+
+      .vis-wrapper {
+        display: flex;
+        flex-flow: row nowrap;
+        margin: 1rem;
+        box-shadow: 0vw 1vw 2vw 0vw rgba(0,0,0,0.1);
+      }
+
+      .vis-wrapper img {
+        margin-left: auto;
+      }
+
+      .vis-textWrapper {
+        display: flex;
+        flex-flow: column nowrap;
+        flex-grow: 1;
+        padding: 0 2rem;
+      }
+    </style>
 
     <template is="dom-repeat" items="{{data}}" as="visual" on-tap="edit">
 
-      <div id$="[[visual.$key]]">
-        <p id="visTitle">[[visual.info.title]]</p>
-        <p id="visType">[[visual.info.type]]</p>
-        <p id="visType">[[visual.info.data]]</p>
+      <div id$="[[visual.$key]]" class="vis-wrapper">
+        <div class="vis-textWrapper">
+          <p id="visTitle">[[visual.info.title]]</p>
+          <p id="visType">[[visual.info.type]]</p>
+        </div>
+        <img src="http://placehold.it/100x200" alt="">
       </div>
         <!-- <form is="iron-form" id="editVis">
           <paper-input id="title1" name="name" label="name" value={{visual.info.title}} required autocomplete></paper-input>
