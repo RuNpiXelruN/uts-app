@@ -24,24 +24,44 @@
         flex-grow: 1;
         padding: 0 2rem;
       }
+
+      .edit-dialog {
+        width: 50%;
+      }
+
+      .edit-form {
+        display: flex;
+        flex-flow: column nowrap;
+      }
+
+      .edit-button {
+        margin-top: 1rem;
+        align-self: flex-end;
+      }
+
     </style>
 
     <template is="dom-repeat" items="{{data}}" as="visual" on-tap="edit">
 
-      <div id$="[[visual.$key]]" class="vis-wrapper">
+      <div id$="[[visual.$key]]" class="vis-wrapper" on-click="openTest">
         <div class="vis-textWrapper">
           <p id="visTitle">[[visual.info.title]]</p>
           <p id="visType">[[visual.info.type]]</p>
+          <paper-button on-tap="edit" title$="test_[[visual.$key]]">Edit</paper-button>
         </div>
         <img src="http://placehold.it/100x200" alt="">
       </div>
-        <!-- <form is="iron-form" id="editVis">
-          <paper-input id="title1" name="name" label="name" value={{visual.info.title}} required autocomplete></paper-input>
-          <paper-input id="type" class="blue" name="type" label="type" value={{visual.info.type}} required autocomplete></paper-input>
-          <paper-input id="data" class="blue" name="data" label="data" value={{visual.info.data}} required autocomplete></paper-input>
-          <paper-button id="send" on-click="sendToUpdate" raised>Update</paper-button>
-        </form> -->
 
+      <paper-dialog id$="test_[[visual.$key]]" class="edit-dialog">
+        <div class="content">
+          <form is="iron-form" id="editVis" class="edit-form">
+            <paper-input id="title1" name="name" label="name" value={{visual.info.title}} required autocomplete></paper-input>
+            <paper-input id="type" class="blue" name="type" label="type" value={{visual.info.type}} required autocomplete></paper-input>
+            <paper-input id="data" class="blue" name="data" label="data" value={{visual.info.data}} required autocomplete></paper-input>
+            <paper-button id="send" class="edit-button" on-click="sendToUpdate" title$="test_[[visual.$key]]" raised>Update</paper-button>
+          </form>
+        </div>
+      </paper-dialog>
 
     </template>
 
@@ -59,7 +79,15 @@
 
       },
 
+      openTest: function(e) {
+        console.log(e.target.title)
+        console.log(e.model.__data__)
+        var editDialog = document.querySelector('#' + e.target.title);
+        editDialog.toggle();
+      },
+
       sendToUpdate: function(e) {
+        var editDialog = document.querySelector('#' + e.target.title);
         var visToEdit = {
           id: e.model.__data__.visual.$key,
           title: e.model.__data__.visual.info.title,
@@ -67,6 +95,7 @@
           data: e.model.__data__.visual.info.data,
         }
         this.fire('update', visToEdit);
+        editDialog.toggle();
       },
 
     });
