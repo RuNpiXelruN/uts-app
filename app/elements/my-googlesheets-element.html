@@ -3,7 +3,7 @@
     <style></style>
     <template is="dom-repeat" items="[[spreadsheets]]">
       <div id$="[[items.$key]]">
-        <paper-button raised>{{item.title.$t}}</paper-button>
+        <paper-button on-tap="getKey" raised>{{item.title.$t}}</paper-button>
       </div>
     </template>
 
