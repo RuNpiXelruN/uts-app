@@ -1,14 +1,24 @@
 <dom-module id="my-dashboard">
   <template>
     <style>
+      :host {
+        margin-top: 2rem;
+      }
     </style>
 
     <firebase-query id="visualsQuery" path="/visuals" data="{{items}}"></firebase-query>
 
-    <h1>[[user.displayName]]'s dashboard.</h1>
+    <google-sheets
+      scopes="https://spreadsheets.google.com/feeds"
+      client-id="1065272399383-45jcbnefkch3kplkv07kvdm4k8vq3du8.apps.googleusercontent.com"
+      key="10wsO_Go3Sv1WIxp-bhxPt1ILQIk5Lql6MRAYr87uBZE"
+      tab-id="1"
+      spreadsheets="{{spreadsheets}}"
+      rows="{{rows}}">
+    </google-sheets>
 
+    <my-googlesheets-element spreadsheets="{{spreadsheets}}" user="[[user]]"></my-googlesheets-element>
     <my-visualisation-form user="[[user]]"></my-visualisation-form>
-
     <my-visualisation-list  on-update="updateData" on-delete="deleteVisualisation" data="{{items}}" user="[[user]]"></my-visualisation-list>
 
 
@@ -21,8 +31,27 @@
         user: {
           type: Object
         },
+        rows: {
+          type: Object,
+        },
+        spreadsheets: {
+          type: Array,
+        },
       },
-
+      observers: [
+        'logSpreadsheets(spreadsheets.*)',
+        'logUser(user.*)',
+        'logRows(rows.*)'
+      ],
+      logUser: function() {
+        console.log('user', this.user);
+      },
+      logRows: function() {
+        console.log('rows', this.rows);
+      },
+      logSpreadsheets: function() {
+        console.log("SS: my-dash", this.spreadsheets);
+      },
       deleteVisualisation: function(data) {
         // console.log('data', data)
         var promises = [];
@@ -76,3 +105,6 @@
     });
   </script>
 </dom-module>
+
+
+<!-- https://spreadsheets.google.com/ccc?key=10wsO_Go3Sv1WIxp-bhxPt1ILQIk5Lql6MRAYr87uBZE -->

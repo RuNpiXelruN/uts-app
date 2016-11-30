@@ -39,8 +39,6 @@
       <paper-button class="signout-btn" raised on-tap="logout" hidden$="[[!user]]">Sign Out</paper-button>
     </div>
 
-
-
     <template is="dom-if" if="[[user]]">
       <my-dashboard user="[[user]]"></my-dashboard>
     </template>

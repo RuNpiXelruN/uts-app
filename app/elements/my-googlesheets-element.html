@@ -1,0 +1,28 @@
+<dom-module id="my-googlesheets-element">
+  <template>
+    <style></style>
+    <template is="dom-repeat" items="[[spreadsheets]]">
+      <div id$="[[items.$key]]">
+        <paper-button raised>{{item.title.$t}}</paper-button>
+      </div>
+    </template>
+
+  </template>
+  <script>
+    Polymer({
+      is: "my-googlesheets-element",
+      properties: {
+        rows: {
+          type: Object
+        },
+        spreadsheets: {
+          type: Array,
+        },
+      },
+      observers: [ 'logSheets(spreadsheets.*)' ],
+      logSheets: function() {
+        console.log('sheets', this.spreadsheets);
+      },
+    })
+  </script>
+</dom-module>
